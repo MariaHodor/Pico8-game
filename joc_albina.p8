@@ -38,6 +38,9 @@ function _update()
 	move_lr = true
 	end
 	if(btn(❎)) then
+		if start_time < 0 then
+		start_time = 0
+		end
 	end_time = time()+2
 	sfx(00)
 	end
@@ -58,6 +61,10 @@ function _draw()
 	end
 	if current_time <= end_time then
 	spr(sp_g[f],x,y,2,2,false,false)
+	animate_g()
+	else
+		start_time = -1
+		--end of glitter
 	end
 end
 
@@ -97,6 +104,24 @@ end
 --function _update
 
 --function _draw
+-->8
+function animate_g()
+	start_time = start_time+1
+	r = min(start_time,20)
+	for  i=0,20 do
+		a = rnd(360)
+		x_g = sin(a)*r
+		y_g = cos(a)*r
+		if rnd(100) < 15 then
+		pset(x+x_g+7,y+y_g+8,8)
+		pset(x+x_g+9,y+y_g+8,8)
+		pset(x+x_g+8,y+y_g+9,8)
+		pset(x+x_g+8,y+y_g+7,8)
+		else
+			pset(x+x_g+8,y+y_g+8,8)
+		end
+	end
+end
 __gfx__
 00000000777777777777777767776776767777766666666666666666666666667777777777777777777777777777777777777777777777777767766676777666
 00000000777777777777777776767677777676776666666666666666666666667776777777777757777777677677777776777777777777776777666677776666
