@@ -3,6 +3,9 @@ version 41
 __lua__
 x = 90
 y = 56
+x_g = 0
+y_g = 0
+hp = 3
 end_time = 0
 function _init()
 	t,f,s=0,1,7
@@ -45,24 +48,27 @@ function _update()
 		end
 	end_time = time()+2
 	sfx(00)
-	end
-	if(btn(🅾️)) then
- enemies_table [1][4] = true
+	collide_e()
 	end
 end
 
 function _draw()
 	cls(14)
+	if hp==0 then
+		stop("game over!", 44, 64)
+	end
 	current_time = time()
 	
 	camera_follow()
+	collide_h()
 	
 	palt(0,false)
 	palt(11, true)
 	map(0,0,0,0,32,32)
-	--spr(33,x,y,2,2,false,false)
 	
-	if current_time%10==0 then
+	draw_hp()
+	
+	if current_time%5==0 then
 		create_enemy()
 	end
 	draw_enemies()
@@ -136,6 +142,22 @@ function animate_g()
 		end
 	end
 end
+
+function draw_hp()
+
+if hp>=1 then 
+circfill(cam_x+10,cam_y+10,4,8)
+end
+
+if hp>=2 then
+circfill(cam_x+20,cam_y+10,4,8)
+end
+
+if hp==3 then
+circfill(cam_x+30,cam_y+10,4,8)
+end
+
+end	
 -->8
 function camera_follow()
 cam_x = x - 56
@@ -164,10 +186,23 @@ function create_enemy()
 		false})
 end
 
+function collide_h()
+	for v in all(enemies_table) do
+		if abs(x+2 - v[2]) <= 10 then
+		if abs(y+2 - v[3]) <= 10 then
+		if v[4] == false then
+		hp=hp-1
+		del(enemies_table, v)
+		end
+		end
+		end
+	end
+end
+
 function collide_e()
 	for v in all(enemies_table) do
-	 if abs(x+x_g+8 - v[2]) < 1 then
-	 if abs(y+y_g+8 - v[3]) < 1 then
+	 if abs(x+x_g+8 - v[2]) < 10 then
+	 if abs(y+y_g+8 - v[3]) < 10 then
 	 v[4] = true
 	 end
 	 end
