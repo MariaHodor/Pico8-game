@@ -6,13 +6,18 @@ y = 56
 x_g = 0
 y_g = 0
 hp = 3
+score = 0
 end_time = 0
+set_time = true
+death_time = -1
 function _init()
 	t,f,s=0,1,7
 	sp_lr={33,35}
 	sp_ud={40,43}
+	sp_d=37
 	sp_g={45,77}
 	sp_e={81,86}
+	sp_h={19,20}
 	enemies_table={}
 	music(00)
 end
@@ -20,6 +25,10 @@ end
 function _update()
 	t= (t+1)%s
 	if (t==0) f=f%#sp_lr+1
+	
+	if hp==0 then
+	return
+	end
 	
 	if(btn(⬆️) and y >= 8) then
 	y-=3
@@ -54,9 +63,11 @@ end
 
 function _draw()
 	cls(14)
-	if hp==0 then
-		stop("game over!", 44, 64)
+	
+	if death_time > 0 and time() > death_time then
+		stop("game over!", 48, 64)
 	end
+	
 	current_time = time()
 	
 	camera_follow()
@@ -67,11 +78,23 @@ function _draw()
 	map(0,0,0,0,32,32)
 	
 	draw_hp()
+	draw_score()
+	draw_enemies()
+	enemy_ai()
+	
+	if hp==0 then
+	if set_time then
+		death_time = time() + 2
+		set_time=false
+	end
+	spr(sp_d,x,y,2,2,false,false)
+	return
+	end
 	
 	if current_time%5==0 then
 		create_enemy()
 	end
-	draw_enemies()
+	
 	
 	if move_lr then
 	spr(sp_lr[f],x,y,2,2,flip_lr,false)
@@ -146,17 +169,26 @@ end
 function draw_hp()
 
 if hp>=1 then 
-circfill(cam_x+10,cam_y+10,4,8)
+spr(sp_h[1],cam_x+10,cam_y+10,1,1,false,false)
+else
+spr(sp_h[2],cam_x+10,cam_y+10,1,1,false,false)
 end
 
 if hp>=2 then
-circfill(cam_x+20,cam_y+10,4,8)
+spr(sp_h[1],cam_x+20,cam_y+10,1,1,false,false)
+else
+spr(sp_h[2],cam_x+20,cam_y+10,1,1,false,false)
 end
 
 if hp==3 then
-circfill(cam_x+30,cam_y+10,4,8)
+spr(sp_h[1],cam_x+30,cam_y+10,1,1,false,false)
+else
+spr(sp_h[2],cam_x+30,cam_y+10,1,1,false,false)
+end
 end
 
+function draw_score()
+	print("score: "..score,cam_x+90,cam_y+10,0)
 end	
 -->8
 function camera_follow()
@@ -203,10 +235,33 @@ function collide_e()
 	for v in all(enemies_table) do
 	 if abs(x+x_g+8 - v[2]) < 10 then
 	 if abs(y+y_g+8 - v[3]) < 10 then
+	 if v[4]==false then
 	 v[4] = true
+	 score=score+1
+	 end
 	 end
 	 end
 	end
+end
+-->8
+function enemy_ai()
+
+for v in all(enemies_table) do
+	if v[4] == false then
+		if v[2]<x then
+		v[2] = v[2]+1
+		else 
+		v[2] = v[2]-1
+		end
+		
+		if v[3]<y then
+		v[3] = v[3]+1
+		else 
+		v[3] = v[3]-1
+		end
+	end
+end
+
 end
 __gfx__
 00000000777777777777777767776776767777766666666666666666666666667777777777777777777777777777777777777777777777777767766676777666
