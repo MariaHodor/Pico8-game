@@ -6,10 +6,14 @@ y = 56
 x_g = 0
 y_g = 0
 hp = 3
+cam_x=0
+cam_y=0
 score = 0
 end_time = 0
 set_time = true
 death_time = -1
+game_started = false
+collision = -1
 function _init()
 	t,f,s=0,1,7
 	sp_lr={33,35}
@@ -26,8 +30,8 @@ function _update()
 	t= (t+1)%s
 	if (t==0) f=f%#sp_lr+1
 	
-	if hp==0 then
-	return
+	if hp==0 then --stop game--
+	return --forced exit--
 	end
 	
 	if(btn(⬆️) and y >= 8) then
@@ -59,19 +63,38 @@ function _update()
 	sfx(00)
 	collide_e()
 	end
+	
+	if (btn(🅾️)) then
+		game_started=true
+	end
 end
 
 function _draw()
-	cls(14)
+	cls(6)
+	
+	if game_started==false then
+		print("press z to start!", 31, 54, 0)
+		print("press x to pollinate!", 25, 64, 0)
+		return
+	end
 	
 	if death_time > 0 and time() > death_time then
-		stop("game over!", 48, 64)
+		stop("game over!", 48, 64, 0)
 	end
 	
 	current_time = time()
 	
 	camera_follow()
-	collide_h()
+	
+	if collide_h() then
+		collision = time()+1
+	end
+	
+	if current_time <= collision then
+		doshake()
+	else
+		collision = -1
+	end
 	
 	palt(0,false)
 	palt(11, true)
@@ -83,6 +106,7 @@ function _draw()
 	enemy_ai()
 	
 	if hp==0 then
+	--set death time for player--
 	if set_time then
 		death_time = time() + 2
 		set_time=false
@@ -90,7 +114,7 @@ function _draw()
 	spr(sp_d,x,y,2,2,false,false)
 	return
 	end
-	
+	--generating enemies--
 	if current_time%5==0 then
 		create_enemy()
 	end
@@ -111,42 +135,19 @@ function _draw()
 	end
 end
 
---function _innit
-
---function _pollinisation
---when the character stayes long enough whthin the reach 
---of a flower
---it is a timed action
-
---function _gain points
---points are gained through pollinisation
-
---function _damage
---damage is received by colliding into enemies
-
---function _items
---random flowers that need to be pollinisation
---need to appear ranadomly in order to be able
---to receive points
-
---function _fly
---the character needs to move around the map
---in all directions
-
---function _speed
--- setting up the speed
---it can also be increased when collecting special items
-
---function _background
---setting the background
---it should also shake when the character receives damage
-
---function _death
---it the player receives damage 3 times the game is over
-
---function _update
-
---function _draw
+function doshake()
+ local shakex=16-rnd(40)
+ local shakey=16-rnd(40)
+ local shake=1
+	
+ while shake > 0 do
+ 	shakex*=shake
+ 	shakey*=shake
+ 
+ 	camera(cam_x+shakex,cam_y+shakey)
+		shake=shake*0.9
+	end
+end
 -->8
 function animate_g()
 	start_time = start_time+1
@@ -220,15 +221,20 @@ end
 
 function collide_h()
 	for v in all(enemies_table) do
+	--check if in proximity--
 		if abs(x+2 - v[2]) <= 10 then
 		if abs(y+2 - v[3]) <= 10 then
+		
+		--if pollinased--
 		if v[4] == false then
 		hp=hp-1
 		del(enemies_table, v)
+		return true
 		end
 		end
 		end
 	end
+	return false
 end
 
 function collide_e()
