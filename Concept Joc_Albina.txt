@@ -1,0 +1,23 @@
+Game Concept:
+
+-Mechanical game (based on repetitive movement and muscle memory), clicker;
+-Cute theme. A game about a bee trying to pollinate flowers;
+-Retro inspired aesthetics (Example: Cuphead);
+-The game inculdes power ups. It increases its difficulty as the player advances through levels;
+-The player has a specific time span for collecting points (pollenating the flowers) and defeating the enemies.
+
+Story:
+
+A misterious disease/visurs has spread between flowers that turns them evil.
+The only way to cure them is for bees to pollinate them.
+The disease transforms innocent garden flowers in inseatiable evil carnivour flowers. 
+The bees need to be careful when pollinating so they don t get caught. 
+If they are caught they get eaten.
+
+
+Statement of originality:
+
+The games's originality comes from the overarching theme that is developed both through gameplay and through the art.
+The main theme is the overturn of evil, done by a bee protagonist, a type that is rarely seen.
+The main colour scheme of the story is inspired by trditional Romanian motifs, acctentuating the colour red, with a moder twist reminescent of retro pixel art games.
+The unique blend gives the game an overall original feel, that encapsules the action-driven atmosphere of the gameplay.
