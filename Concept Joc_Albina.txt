@@ -21,3 +21,9 @@ The games's originality comes from the overarching theme that is developed both 
 The main theme is the overturn of evil, done by a bee protagonist, a type that is rarely seen.
 The main colour scheme of the story is inspired by trditional Romanian motifs, acctentuating the colour red, with a moder twist reminescent of retro pixel art games.
 The unique blend gives the game an overall original feel, that encapsules the action-driven atmosphere of the gameplay.
+
+Resources:
+Camera follow - https://mboffin.itch.io/pico8-camera-follow
+Enemy collision, create enemies - https://nerdyteachers.com/PICO-8/Bitesize_Games/?tutorial=6
+Enemy AI - https://www.lexaloffle.com/bbs/?tid=48889
+Screen shaker - https://www.lexaloffle.com/bbs/?pid=34136
